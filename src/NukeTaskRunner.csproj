@@ -28,8 +28,8 @@
     <ProjectGuid>{5BB616A3-0392-421C-9D49-683EB5211159}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NpmTaskRunner</RootNamespace>
-    <AssemblyName>NpmTaskRunner</AssemblyName>
+    <RootNamespace>NukeTaskRunner</RootNamespace>
+    <AssemblyName>NukeTaskRunner</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
@@ -96,7 +96,6 @@
     <Content Include="Resources\preview.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Resource Include="Resources\yarn.png" />
     <VSCTCompile Include="VSCommandTable.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
       <Generator>VsctGenerator</Generator>

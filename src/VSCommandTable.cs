@@ -6,20 +6,20 @@
 namespace NukeTaskRunner
 {
     using System;
-
+    
     /// <summary>
     /// Helper class that exposes all GUIDs used across VS Package.
     /// </summary>
     internal sealed partial class PackageGuids
     {
         public const string guidVSPackageString = "4e8515f1-e3d4-41a9-bec4-3a2b0f5d598e";
-        public static Guid guidVSPackage = new Guid(PackageGuids.guidVSPackageString);
+        public static Guid guidVSPackage = new Guid(guidVSPackageString);
 
         public const string guidVSPackageCmdSetString = "f33dcc6c-6029-43ca-b362-b45d82a5276f";
-        public static Guid guidVSPackageCmdSet = new Guid(PackageGuids.guidVSPackageCmdSetString);
+        public static Guid guidVSPackageCmdSet = new Guid(guidVSPackageCmdSetString);
 
         public const string guidTaskRunnerExplorerCmdSetString = "5f383d88-1da7-4193-9f33-854741652a05";
-        public static Guid guidTaskRunnerExplorerCmdSet = new Guid(PackageGuids.guidTaskRunnerExplorerCmdSetString);
+        public static Guid guidTaskRunnerExplorerCmdSet = new Guid(guidTaskRunnerExplorerCmdSetString);
     }
     /// <summary>
     /// Helper class that encapsulates all CommandIDs uses across VS Package.

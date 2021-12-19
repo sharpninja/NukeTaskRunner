@@ -32,7 +32,7 @@ internal class TaskParser
             {
                 foreach (Match target in targets)
                 {
-                    string targetName = target.Value;
+                    string targetName = target.Groups.Cast<Group>().LastOrDefault()?.Value ?? "<<null>>";
                     if (!list.ContainsKey(targetName))
                     {
                         list.Add(targetName, $"{cliCommandName} {targetName}");

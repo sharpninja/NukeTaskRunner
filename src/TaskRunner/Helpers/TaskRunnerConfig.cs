@@ -22,11 +22,20 @@ public class TaskRunnerConfig : TaskRunnerConfigBase
         => _cliCommandName = cliCommandName;
 
     protected override ImageSource LoadRootNodeIcon()
-        => new BitmapImage(
-            new Uri(
-                $@"pack://application:,,,/NpmTaskRunner;component/Resources/{_cliCommandName}.png"
-            )
-        );
+    {
+        try
+        {
+            return new BitmapImage(
+                new Uri(
+                    $@"pack://application:,,,/NukeTaskRunner;component/Resources/{_cliCommandName}.png"
+                )
+            );
+        }
+        catch
+        {
+            return default;
+        }
+    }
 
     private readonly string _cliCommandName;
 }
