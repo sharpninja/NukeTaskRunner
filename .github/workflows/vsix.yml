@@ -39,3 +39,12 @@ jobs:
     - name: Build then Extension
       run: msbuild $env:Solution_Name /t:Build
       
+    - name: Publish to Open VSIX
+      run: |
+        (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") `
+          | iex
+        Vsix-PublishToGallery `
+          ".\src\bin\Debug\NukeTaskRunner.vsix" `
+          -Verbose `
+          -readmeUrl https://raw.githubusercontent.com/sharpninja/NukeTaskRunner/main/README.md
+        
