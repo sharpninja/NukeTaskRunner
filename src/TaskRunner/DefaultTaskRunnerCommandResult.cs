@@ -1,4 +1,5 @@
-﻿namespace NukeTaskRunner.TaskRunner;
+﻿// ReSharper disable UnusedMember.Global
+namespace NukeTaskRunner.TaskRunner;
 
 using Microsoft.VisualStudio.TaskRunnerExplorer;
 

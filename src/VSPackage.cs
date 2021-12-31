@@ -16,9 +16,4 @@ using Microsoft.VisualStudio.Shell;
 // ReSharper disable once InconsistentNaming
 public sealed class VSPackage : AsyncPackage
 {
-    public VSPackage()
-        : base()
-    {
-        // Ignore
-    }
 }

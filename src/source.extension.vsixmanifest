@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="c5203f5f-4785-4c09-b383-688a100a9f5d" Version="1.0" Language="en-US" 
+        <Identity Id="21B985AA-236C-4F50-9704-ABFD443F5814" Version="1.1" Language="en-US"
         Publisher="Mads Kristensen &amp; Sharp Ninja" />
         <DisplayName>NUKE Task Runner</DisplayName>
         <Description xml:space="preserve">Adds support for nuke scripts defined in Build.cs directly in Visual Studio's Task Runner Explorer.</Description>

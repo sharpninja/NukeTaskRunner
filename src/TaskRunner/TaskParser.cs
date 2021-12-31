@@ -1,4 +1,5 @@
-﻿namespace NukeTaskRunner.TaskRunner;
+﻿// ReSharper disable UnusedParameter.Local
+namespace NukeTaskRunner.TaskRunner;
 
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ internal class TaskParser
         {
             string document = File.ReadAllText(configPath);
 
-            Regex regex = new(pattern: @"\bTarget (?<Target>[^\s=]+)\b",
+            Regex regex = new(@"\bTarget (?<Target>[^\s=]+)\b",
                 Multiline |
                 Compiled |
                 ExplicitCapture);

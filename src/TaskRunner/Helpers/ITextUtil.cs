@@ -1,4 +1,5 @@
-﻿namespace NukeTaskRunner.TaskRunner.Helpers;
+﻿// ReSharper disable UnusedMember.Global
+namespace NukeTaskRunner.TaskRunner.Helpers;
 
 public interface ITextUtil
 {

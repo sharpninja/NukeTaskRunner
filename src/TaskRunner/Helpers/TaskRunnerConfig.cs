@@ -1,4 +1,5 @@
-﻿namespace NukeTaskRunner.TaskRunner.Helpers;
+﻿// ReSharper disable RedundantVerbatimStringPrefix
+namespace NukeTaskRunner.TaskRunner.Helpers;
 
 using System;
 using System.Windows.Media;
@@ -26,7 +27,7 @@ public class TaskRunnerConfig : TaskRunnerConfigBase
         try
         {
             return new BitmapImage(
-                new Uri(
+                new(
                     $@"pack://application:,,,/NukeTaskRunner;component/Resources/{_cliCommandName}.png"
                 )
             );

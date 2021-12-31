@@ -1,4 +1,5 @@
-﻿namespace NukeTaskRunner.TaskRunner.Helpers;
+﻿// ReSharper disable NotAccessedVariable
+namespace NukeTaskRunner.TaskRunner.Helpers;
 
 using System;
 using System.Linq;
@@ -78,29 +79,28 @@ public static class BindingsPersister
         string fileText = textUtil.ReadAllText();
         JObject body = JObject.Parse(fileText);
 
-        JObject bindings = body[BINDINGS_NAME] as JObject;
-
-        if (bindings != null)
+        if (body[BindingsPersister.BINDINGS_NAME] is not JObject bindings)
         {
-            XElement bindingsElement = XElement.Parse("<binding />");
-
-            foreach (JProperty property in bindings.Properties())
-            {
-                string[] tasks = property.Value.Values<string>()
-                    .ToArray();
-                bindingsElement.SetAttributeValue(property.Name, string.Join(",", tasks));
-            }
-
-            return bindingsElement.ToString();
+            return "<binding />";
         }
 
-        return "<binding />";
+        XElement bindingsElement = XElement.Parse("<binding />");
+
+        foreach (JProperty property in bindings.Properties())
+        {
+            string[] tasks = property.Value.Values<string>()
+                .ToArray();
+            bindingsElement.SetAttributeValue(property.Name, string.Join(",", tasks));
+        }
+
+        return bindingsElement.ToString();
+
     }
 
     public static bool Save(string configPath, string bindingsXml)
     {
         XElement bindingsXmlObject = XElement.Parse(bindingsXml);
-        JObject bindingsXmlBody = JObject.Parse(@"{}");
+        JObject bindingsXmlBody = JObject.Parse("{}");
         var anyAdded = false;
 
         foreach (XAttribute attribute in bindingsXmlObject.Attributes())
@@ -137,6 +137,12 @@ public static class BindingsPersister
         fileModel[BINDINGS_NAME] = bindingsXmlBody;
 
         JProperty property = fileModel.Property(BINDINGS_NAME);
+
+        if (property is null)
+        {
+            return false;
+        }
+
         var bindingText = property.ToString(Formatting.None);
         textUtil.Reset();
 
@@ -174,40 +180,43 @@ public static class BindingsPersister
                 ++lineNumber;
             }
 
-            if ((candidateLine >= 0) &&
-                (lastBraceIndex >= 0))
+            if ((candidateLine < 0) ||
+                (lastBraceIndex < 0))
             {
-                if (textUtil.Insert(
-                        new Range
-                        {
-                            _lineNumber = candidateLine,
-                            _lineRange = new LineRange
-                            {
-                                _start = lastBraceIndex,
-                                _length = bindingText.Length,
-                            },
-                        },
-                        bindingText,
-                        true
-                    ))
-                {
-                    textUtil.FormatRange(
-                        new LineRange
-                        {
-                            _start = characterCount,
-                            _length = bindingText.Length,
-                        }
-                    );
-
-                    return true;
-                }
+                return false;
             }
 
-            return false;
+            if (!textUtil.Insert(
+                    new Range
+                    {
+                        _lineNumber = candidateLine,
+                        _lineRange = new LineRange
+                        {
+                            _start = lastBraceIndex,
+                            _length = bindingText.Length,
+                        },
+                    },
+                    bindingText,
+                    true
+                ))
+            {
+                return false;
+            }
+
+            textUtil.FormatRange(
+                new LineRange
+                {
+                    _start = characterCount,
+                    _length = bindingText.Length,
+                }
+            );
+
+            return true;
+
         }
 
         int bindingsIndex = currentContents.IndexOf(
-            @"""" + BINDINGS_NAME + @"""",
+            @"""" + BindingsPersister.BINDINGS_NAME + @"""",
             StringComparison.Ordinal
         );
         int closeBindingsBrace = currentContents.IndexOf('}', bindingsIndex) + 1;
@@ -240,7 +249,7 @@ public static class BindingsPersister
                 );
             }
 
-            if (textUtil.Delete(
+            if (!textUtil.Delete(
                     new Range
                     {
                         _lineNumber = startLine,
@@ -252,19 +261,20 @@ public static class BindingsPersister
                     }
                 ))
             {
-                textUtil.Reset();
-                textUtil.FormatRange(
-                    new LineRange
-                    {
-                        _start = bindingsIndex,
-                        _length = 2,
-                    }
-                );
-
-                return true;
+                return false;
             }
 
-            return false;
+            textUtil.Reset();
+            textUtil.FormatRange(
+                new LineRange
+                {
+                    _start = bindingsIndex,
+                    _length = 2,
+                }
+            );
+
+            return true;
+
         }
 
         bool success = textUtil.Replace(
@@ -292,6 +302,7 @@ public static class BindingsPersister
         }
 
         return success;
+
     }
 
     private const string BINDINGS_NAME = "-vs-binding";

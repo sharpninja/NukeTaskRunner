@@ -24,29 +24,29 @@ internal class FileTextUtil : ITextUtil
 
         string fileContents = File.ReadAllText(_filename);
 
-        using (StringReader reader = new(fileContents))
-        using (TextWriter writer = new StreamWriter(File.Open(_filename, FileMode.Create)))
+        using StringReader reader = new(fileContents);
+
+        using TextWriter writer = new StreamWriter(File.Open(_filename, FileMode.Create));
+
+        if (SeekTo(
+                reader,
+                writer,
+                range,
+                out string lineText
+            ))
         {
-            if (SeekTo(
-                    reader,
-                    writer,
-                    range,
-                    out string lineText
-                ))
-            {
-                writer.WriteLine(
-                    lineText.Substring(0, range._lineRange._start) +
-                    lineText.Substring(range._lineRange._start + range._lineRange._length)
-                );
-            }
+            writer.WriteLine(
+                lineText.Substring(0, range._lineRange._start) +
+                lineText.Substring(range._lineRange._start + range._lineRange._length)
+            );
+        }
 
+        lineText = reader.ReadLine();
+
+        while (lineText != null)
+        {
+            writer.WriteLine(lineText);
             lineText = reader.ReadLine();
-
-            while (lineText != null)
-            {
-                writer.WriteLine(lineText);
-                lineText = reader.ReadLine();
-            }
         }
 
         return true;
@@ -65,33 +65,33 @@ internal class FileTextUtil : ITextUtil
 
         string fileContents = File.ReadAllText(_filename);
 
-        using (StringReader reader = new(fileContents))
-        using (TextWriter writer = new StreamWriter(File.Open(_filename, FileMode.Create)))
+        using StringReader reader = new(fileContents);
+
+        using TextWriter writer = new StreamWriter(File.Open(_filename, FileMode.Create));
+
+        if (SeekTo(
+                reader,
+                writer,
+                range,
+                out string lineText
+            ))
         {
-            if (SeekTo(
-                    reader,
-                    writer,
-                    range,
-                    out string lineText
-                ))
-            {
-                writer.WriteLine(
-                    lineText.Substring(0, range._lineRange._start) +
-                    text +
-                    (addNewline
-                        ? Environment.NewLine
-                        : string.Empty) +
-                    lineText.Substring(range._lineRange._start)
-                );
-            }
+            writer.WriteLine(
+                lineText.Substring(0, range._lineRange._start) +
+                text +
+                (addNewline
+                    ? Environment.NewLine
+                    : string.Empty) +
+                lineText.Substring(range._lineRange._start)
+            );
+        }
 
+        lineText = reader.ReadLine();
+
+        while (lineText != null)
+        {
+            writer.WriteLine(lineText);
             lineText = reader.ReadLine();
-
-            while (lineText != null)
-            {
-                writer.WriteLine(lineText);
-                lineText = reader.ReadLine();
-            }
         }
 
         return true;
@@ -110,27 +110,26 @@ internal class FileTextUtil : ITextUtil
         line = null;
         Stream stream = File.OpenRead(_filename);
 
-        using (TextReader reader = new StreamReader(stream))
+        using TextReader reader = new StreamReader(stream);
+
+        int lineCount = _lineNumber;
+
+        for (var i = 0; i < lineCount + 1; ++i)
         {
-            int lineCount = _lineNumber;
-
-            for (var i = 0; i < lineCount + 1; ++i)
-            {
-                line = reader.ReadLine();
-            }
-
-            if (line != null)
-            {
-                _currentLineLength = line.Length;
-                ++_lineNumber;
-
-                return true;
-            }
-
-            _currentLineLength = 0;
-
-            return false;
+            line = reader.ReadLine();
         }
+
+        if (line != null)
+        {
+            _currentLineLength = line.Length;
+            ++_lineNumber;
+
+            return true;
+        }
+
+        _currentLineLength = 0;
+
+        return false;
     }
 
     public FileTextUtil(string filename)
@@ -141,7 +140,7 @@ internal class FileTextUtil : ITextUtil
     private int _lineNumber;
 
     private bool SeekTo(
-        StringReader reader,
+        TextReader reader,
         TextWriter writer,
         Range range,
         out string lineText
@@ -167,18 +166,18 @@ internal class FileTextUtil : ITextUtil
 
         lineText = reader.ReadLine();
 
-        if (success)
+        if (!success)
         {
-            if (lineText != null)
-            {
-                if (lineText.Length < range._lineRange._start)
-                {
-                    success = false;
-                    writer.WriteLine(lineText);
-                }
-            }
+            return false;
         }
 
-        return success;
+        if ((lineText == null) || (lineText.Length >= range._lineRange._start))
+        {
+            return true;
+        }
+
+        writer.WriteLine(lineText);
+
+        return false;
     }
 }

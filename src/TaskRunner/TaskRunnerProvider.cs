@@ -54,9 +54,9 @@ internal class TaskRunnerProvider : ITaskRunner
 
     private void AddCommands(
         string configPath,
-        SortedList<string, string> scripts,
+        IReadOnlyDictionary<string, string> scripts,
         IEnumerable<KeyValuePair<string, IEnumerable<string>>> commands,
-        TaskNode tasks,
+        ITaskRunnerNode tasks,
         bool isNuke
     )
     {

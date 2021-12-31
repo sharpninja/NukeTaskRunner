@@ -7,11 +7,15 @@ using Microsoft.VisualStudio.TaskRunnerExplorer;
 
 public abstract class TaskRunnerConfigBase : ITaskRunnerConfig
 {
+    protected internal ITaskRunnerCommandContext Context
+    {
+        get;
+    }
+
     /// <summary>
     ///     TaskRunner icon
     /// </summary>
-    public virtual ImageSource Icon => _sharedIcon ??
-                                       (_sharedIcon = LoadRootNodeIcon());
+    public virtual ImageSource Icon => TaskRunnerConfigBase._sharedIcon ??= LoadRootNodeIcon();
 
     public ITaskRunnerNode TaskHierarchy { get; }
 
@@ -47,8 +51,8 @@ public abstract class TaskRunnerConfigBase : ITaskRunnerConfig
 
     protected TaskRunnerConfigBase(ITaskRunnerCommandContext context, ITaskRunnerNode hierarchy)
     {
+        Context = context;
         TaskHierarchy = hierarchy;
-        _context = context;
     }
 
     protected virtual void Dispose(bool isDisposing)
@@ -58,6 +62,5 @@ public abstract class TaskRunnerConfigBase : ITaskRunnerConfig
     protected virtual ImageSource LoadRootNodeIcon()
         => null;
 
-    private ITaskRunnerCommandContext _context;
     private static ImageSource _sharedIcon;
 }
