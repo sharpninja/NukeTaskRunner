@@ -29,8 +29,8 @@ jobs:
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
-      run: dotnet restore $env:Solution_Name #/t:Restore
+      run: msbuild $env:Solution_Name /t:Restore
 
     - name: Build then Extension
-      run: dotnet build $env:Solution_Name #/t:Build
+      run: msbuild $env:Solution_Name /t:Build
       
