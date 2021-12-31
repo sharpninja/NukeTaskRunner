@@ -36,4 +36,6 @@ jobs:
     
     - name: Build then Extension
       run: msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration /p:Platform=x64
+      env:
+        Configuration: ${{ matrix.configuration }}
       
