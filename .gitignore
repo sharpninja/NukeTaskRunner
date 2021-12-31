@@ -24,3 +24,6 @@ x64/
 _NCrunch_WebCompiler
 /.gitattributes
 /*.DotSettings
+
+.version
+**/.version

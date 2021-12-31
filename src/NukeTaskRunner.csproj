@@ -122,6 +122,11 @@
     <Resource Include="Resources\npm.png" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="GitVersion.MsBuild">
+      <Version>5.8.1</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SDK" ExcludeAssets="runtime">
       <Version>17.0.31902.203</Version>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
