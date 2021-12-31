@@ -1,0 +1,50 @@
+name: VSIX
+
+on:
+  release:
+    types:
+      - created
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2022  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    env:
+      Solution_Name: NukeTaskRunner.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
+
+    steps:
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.2
+      with:
+        vs-version: '[17.0,)'
+        vs-prerelease: true
+        msbuild-architecture: x64
+        
+
+    # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Restore the application
+      run: msbuild $env:Solution_Name /t:Restore
+
+    - name: Build then Extension
+      run: msbuild $env:Solution_Name /t:Build
+      
+    - name: Publish to Open VSIX
+      run: |
+        (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") `
+          | iex
+        Vsix-PublishToGallery `
+          ".\src\bin\Debug\NukeTaskRunner.vsix" `
+          -Verbose `
+          -readmeUrl https://raw.githubusercontent.com/sharpninja/NukeTaskRunner/main/README.md
+        
